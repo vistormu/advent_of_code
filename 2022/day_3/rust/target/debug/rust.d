@@ -1,0 +1,1 @@
+/home/vistor/projects/advent_of_code/2022/day_3/rust/target/debug/rust: /home/vistor/projects/advent_of_code/2022/day_3/rust/src/../../input.txt /home/vistor/projects/advent_of_code/2022/day_3/rust/src/main.rs

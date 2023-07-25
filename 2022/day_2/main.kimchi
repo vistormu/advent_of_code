@@ -1,0 +1,82 @@
+let LOSS be 0
+let DRAW be 3
+let WIN be 6
+let ROCK be 1
+let PAPER be 2
+let SCISSORS be 3
+
+let rock_paper_scissors: fn = fn(oponent: i64, me: i64): i64 {
+    let result be 0
+
+    if oponent is me {
+        mut result to DRAW
+    } else if (me - 1 is oponent) or (me is ROCK and oponent is SCISSORS) {
+        mut result to WIN
+    }
+    return result
+}
+
+let inverse_rock_paper_scissors: fn = fn(oponent: i64, result: i64): i64 {
+    let shape: i64 = oponent
+    if result is WIN {
+        mut shape to oponent + 1
+        if oponent is SCISSORS {
+            mut shape to ROCK
+        }
+    } else if result is LOSS {
+        mut shape to oponent - 1
+        if oponent is ROCK {
+            mut shape to SCISSORS
+        }
+    }
+    return shape
+}
+
+let part_1: fn = fn(): none {
+    let letter_to_shape: map(str, i64) = map(
+            "A": ROCK,
+            "B": PAPER,
+            "C": SCISSORS,
+            "X": ROCK,
+            "Y": PAPER,
+            "Z": SCISSORS
+            )
+    
+    let rounds: str = read("input.txt").split("\n")
+
+    let score be 0
+    for _, round in rounds {
+        let oponent: i64 = letter_to_shape(round.split(" ")(0))
+        let me: i64 = letter_to_shape(round.split(" ")(1))
+
+        mut score to + rock_paper_scissors(oponent, me) + me
+    }
+    exe print(score)
+}
+
+let part_2: fn = fn(): none {
+    let letter_to_shape: map(str, i64) = map(
+            "A": ROCK,
+            "B": PAPER,
+            "C": SCISSORS
+            )
+    let letter_to_result: map(str, i64) = map(
+            "X": LOSS,
+            "Y": DRAW,
+            "Z": WIN
+            )
+
+    let rounds: str = read("input.txt").split("\n")
+
+    let score be 0
+    for _, round in rounds {
+        mut round to .split(" ")
+        let oponent: i64 = letter_to_shape(round(0))
+        let result: i64 = letter_to_result(round(1))
+        mut score to + inverse_rock_paper_scissors(oponent, result) + result
+    }
+    exe print(score)
+}
+
+exe part_1
+exe part_2

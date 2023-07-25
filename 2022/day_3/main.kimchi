@@ -1,0 +1,81 @@
+let LETTERS: str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+let tokenize: fn = fn(input: str): list(i64) {
+    let tokens: list(i64) = list()
+    for _, letter in input {
+        let found be false
+        let index be 0
+        while not found {
+            if LETTERS(index) is letter {
+                mut found to true
+            } else {
+                mut index to + 1
+            }
+        }
+        mut tokens to .append(index + 1)
+    }
+
+    return tokens
+}
+
+let is_in_list: fn = fn(item: i64, input: list(i64)): bool {
+    for _, list_item in input {
+        if item is list_item {
+            return true
+        }
+    }
+    return false
+}
+
+let get_intersection: fn = fn(first: list(i64), second: list(i64)): list(i64) {
+    let intersection: list(i64) = list()
+    for _, first_item in first {
+        for _, second_item in second {
+            if (first_item is second_item) and (not is_in_list(first_item, intersection)) {
+                mut intersection to .append(first_item)
+            } 
+        }
+    }
+    return intersection
+}
+
+let part_1: fn = fn(): none {
+    let supplies: list(str) = read("input.txt").split("\n")
+
+    let intersection: list(i64) = list()
+    for _, rucksack in supplies {
+        let tokens: list(i64) = tokenize(rucksack)
+
+        let comp_1: list(i64) = tokens(0 to tokens.len/2)
+        let comp_2: list(i64) = tokens(tokens.len/2 to tokens.len)
+
+        let repeated: list(i64) = get_intersection(comp_1, comp_2)
+
+        mut intersection to .concat(repeated)
+    }
+    exe print(intersection.sum)
+}
+
+let part_2: fn = fn(): none {
+    let supplies: list(str) = read("input.txt").split("\n")
+
+    let intersection: list(i64) = list()
+    let group: list(list) = list()
+
+    for _, rucksack in supplies {
+        mut group to .append(tokenize(rucksack))
+
+        continue if group.len is not 3
+        
+        let inter_1: list(i64) = get_intersection(group(0), group(1))
+        let inter_2: list(i64) = get_intersection(inter_1, group(2))
+
+        mut intersection to .append(inter_2(0)) # Still no unpack operator
+        mut group to list()
+    }
+
+    exe print(intersection.sum)
+}
+
+exe part_1
+exe part_2

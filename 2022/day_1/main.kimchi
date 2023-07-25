@@ -1,0 +1,16 @@
+let main: fn = fn(): none {
+    let elves: list(str) = read("input.txt").split("\n\n")
+    
+    let calories_per_elf: list(i64) = list()
+    for _, elf in elves {
+        let calories be 0
+        for _, calorie in elf.split("\n") {
+            mut calories to + calorie.as_i64
+        }
+        mut calories_per_elf to .append(calories)
+    }
+    exe print(calories_per_elf.max)
+    exe print(calories_per_elf.sort.reverse()(0 to 3).sum)
+}
+
+exe main

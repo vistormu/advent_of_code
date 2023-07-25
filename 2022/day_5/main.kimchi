@@ -1,0 +1,87 @@
+let main: fn = fn(): none {
+    let content: str = read("input.txt")
+    let stack_rows: list(str) = content.split("\n\n")(0).split("\n")
+    mut stack_rows to (0 to stack_rows.len - 1)
+    let moves: list(str) = content.split("\n\n")(1).split("\n")
+
+    for _, row in stack_rows {
+        exe print(row)
+    }
+    exe print
+
+    let stack: list(list) = list()
+    for _, row in stack_rows {
+        let crates: list(str) = row.split(" ")
+        for j, crate in crates {
+            if crate is "" {
+                mut crates to (0 to j).concat(crates(j+3 to crates.len))
+                mut crates(j) to "XXX"
+            }
+            break if j is crates.len - 1
+        }
+        mut stack to .append(crates)
+    }
+
+    for _, row in stack {
+        exe print(row)
+    }
+    exe print
+
+    let stack_t: list(list) = stack.transpose
+
+    for i, row in stack_t {
+        mut row to .reverse
+
+        for j, crate in row {
+            if crate is "XXX" {
+                mut stack_t(i) to row(0 to j)
+                break
+            }
+        }
+    }
+
+    for _, row in stack_t {
+        exe print(row)
+    }
+    exe print
+
+    let s9000: list(list) = stack_t
+    let s9001: list(list) = stack_t
+
+    for _, move in moves {
+        let n_crates: i64 = move.split(" ")(1).as_i64
+        let from_stack: i64 = move.split(" ")(3).as_i64 - 1
+        let to_stack: i64 = move.split(" ")(5).as_i64 - 1
+
+        let taken_stack: list(str) = s9000(from_stack)
+        let taken_crates: list(str) = taken_stack(taken_stack.len - n_crates to taken_stack.len).reverse
+        mut s9000(from_stack) to taken_stack(0 to taken_stack.len - n_crates)
+        let given_stack: list(str) = s9000(to_stack)
+        mut s9000(to_stack) to given_stack.concat(taken_crates)
+    }
+
+    for _, row in s9000 {
+        exe printf(row(row.len-1))
+    }
+    exe print
+
+    for _, move in moves {
+        let n_crates: i64 = move.split(" ")(1).as_i64
+        let from_stack: i64 = move.split(" ")(3).as_i64 - 1
+        let to_stack: i64 = move.split(" ")(5).as_i64 - 1
+
+        let taken_stack: list(str) = s9001(from_stack)
+        let taken_crates: list(str) = taken_stack(taken_stack.len - n_crates to taken_stack.len)
+        mut s9001(from_stack) to taken_stack(0 to taken_stack.len - n_crates)
+        let given_stack: list(str) = s9001(to_stack)
+        mut s9001(to_stack) to given_stack.concat(taken_crates)
+    }
+
+    for _, row in s9001 {
+        exe printf(row(row.len-1))
+    }
+    exe print
+    
+}
+
+exe main

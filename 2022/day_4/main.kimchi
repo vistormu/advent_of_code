@@ -1,0 +1,29 @@
+let main: fn = fn(): none {
+    let pairs: list(str) = read("input.txt").split("\n")
+
+    let subset_counter be 0
+    let overlap_counter be 0
+    for _, pair in pairs {
+        continue if pair is ""
+
+        let elf_pair: list(str) = pair.split(",")
+        let assignment_1: list(str) = pair.split(",")(0).split("-")
+        let assignment_2: list(str) = pair.split(",")(1).split("-")
+
+        let a1S: i64 = assignment_1(0).as_i64
+        let a1E: i64 = assignment_1(1).as_i64
+        let a2S: i64 = assignment_2(0).as_i64
+        let a2E: i64 = assignment_2(1).as_i64
+
+        if (a1S <= a2S and a1E >= a2E) or (a1S >= a2S and a1E <= a2E) {
+            mut subset_counter to + 1
+        }
+        if (a1S <= a2S and a1E >= a2S) or (a1S >= a2S and a1S <= a2E) {
+            mut overlap_counter to + 1
+        }
+    }
+    exe print("Number of subsets: ", subset_counter)
+    exe print("Number of overlaps: ", overlap_counter)
+}
+
+exe main
