@@ -1,0 +1,35 @@
+let has_unique_chars be fn(input: str): bool {
+    for i, _ in input {
+        break if i is input.len - 1
+        for _, j in list(i+1 to input.len) {
+            if input(i) is input(j) {
+                return false
+            }
+        }
+    }
+    return true
+}
+
+let get_unique_packet_index be fn(input: str, length: i64): i64 {
+    let packet: str = input(0 to length)
+    let detected be false
+    let index: i64 = -1
+
+    while not detected {
+        mut index to + 1
+        mut packet to input(index to index+length)
+        if has_unique_chars(packet) {
+            mut detected to true
+        }
+    }
+    return index + length
+}
+
+let main be fn(): none {
+    let content: str = read("input.txt")
+
+    exe print(get_unique_packet_index(content, 4))
+    exe print(get_unique_packet_index(content, 14))
+} 
+
+exe main
