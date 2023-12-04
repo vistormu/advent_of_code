@@ -1,0 +1,34 @@
+let is_digit be fn(char: str): bool {
+    if char is "0" or char is "1" or char is "2" or char is "3" or char is "4" or char is "5" or char is "6" or char is "7" or char is "8" or char is "9" {
+        return true
+    }
+    return false
+}
+
+let main be fn(): none {
+    let content: str = read("input.txt")
+    let lines: list(str) = content.split("\n")
+
+    let sum be 0
+    for _, line in lines {
+        let first_digit be ""
+        let last_digit be ""
+        let first_found be false
+        for _, char in line {
+            if is_digit(char) and not first_found {
+                mut first_digit to char
+                mut first_found to true
+            } else if is_digit(char) {
+                mut last_digit to char
+            }
+        }
+        if last_digit is "" {
+            mut last_digit to first_digit
+        }
+
+        mut sum to + (first_digit + last_digit).as_i64()
+    }
+    exe print(sum)
+}
+
+exe main
