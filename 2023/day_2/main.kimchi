@@ -1,0 +1,84 @@
+let strip_array be fn(array: list(str)): list(str) {
+    for i, item in array {
+        mut array(i) to item.strip
+    }
+    return array
+}
+
+let part_1 be fn(): none {
+    let lines: list(str) = read("input.txt").split("\n")
+
+    let sum be 0
+    for game, line in lines {
+        let content: str = line.split(":")(1)
+        let sets: list(str) = content.split(";")
+        mut sets to strip_array(sets)
+
+        let balls: list(str) = list()
+        for _, set_ in sets {
+            mut balls to + set_.split(",")
+        }
+        mut balls to strip_array(balls)
+
+        let possible be true
+        for _, ball in balls {
+            let color: str = ball.split(" ")(1)
+            let number: i64 = ball.split(" ")(0).as_i64
+
+            if color is "red" and number > 12 {
+                mut possible to false
+                break
+            } else if color is "green" and number > 13 {
+                mut possible to false
+                break
+            } else if color is "blue" and number > 14 {
+                mut possible to false
+                break
+            }
+        }
+
+        if possible {
+            mut sum to + game + 1
+        }
+    }
+
+    exe print(sum)
+}
+
+let part_2 be fn(): none {
+    let lines: list(str) = read("input.txt").split("\n")
+
+    let sum be 0
+    for game, line in lines {
+        let content: str = line.split(":")(1)
+        let sets: list(str) = content.split(";")
+        mut sets to strip_array(sets)
+
+        let balls: list(str) = list()
+        for _, set_ in sets {
+            mut balls to + set_.split(",")
+        }
+        mut balls to strip_array(balls)
+        
+        let max_red be 0
+        let max_green be 0
+        let max_blue be 0
+        for _, ball in balls {
+            let color: str = ball.split(" ")(1)
+            let number: i64 = ball.split(" ")(0).as_i64
+
+            if color is "red" and number > max_red {
+                mut max_red to number
+            } else if color is "green" and number > max_green {
+                mut max_green to number
+            } else if color is "blue" and number > max_blue {
+                mut max_blue to number
+            }
+        }
+        mut sum to + max_red * max_green * max_blue
+    }
+    exe print(sum)
+}
+
+exe part_1
+exe part_2
