@@ -1,0 +1,12 @@
+# input files
+*.txt
+
+# python
+**/__pycache__/
+*.pyc
+
+# gleam
+*.beam
+*.ez
+/build
+erl_crash.dump
