@@ -8,3 +8,4 @@
 | [Day 3: Toboggan Trajectory](https://github.com/vistormu/advent_of_code/tree/master/2020/day_3) | :star: :star: | Gleam |
 | [Day 4: Passport Processing](https://github.com/vistormu/advent_of_code/tree/master/2020/day_4) | :star: :star: | Gleam |
 | [Day 5: Binary Boarding](https://github.com/vistormu/advent_of_code/tree/master/2020/day_5) | :star: :star: | Gleam |
+| [Day 6: Custom Customs](https://github.com/vistormu/advent_of_code/tree/master/2020/day_6) | :star: :star: | Gleam |
