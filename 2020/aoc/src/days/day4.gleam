@@ -1,23 +1,18 @@
 import gleam/io
+import gleamx/iox
 import gleam/list
 import gleam/string
 import gleam/int
+import gleamx/intx
 import gleam/dict.{type Dict}
 import gleam/regex
-import simplifile as file
+import gleamx/resultx.{panic_unwrap}
 
-
-fn unwrap(result: Result(t, _)) -> t {
-    case result {
-        Ok(result) -> result
-        _ -> panic
-    }
-}
 
 fn read_lines(file_path: String) -> List(String) {
     file_path
-    |> file.read 
-    |> unwrap
+    |> iox.read_file
+    |> panic_unwrap
     |> string.trim
     |> string.split(on: "\n\n")
     |> list.map(string.replace(_, "\n", " "))
@@ -31,10 +26,10 @@ fn parse_passport(passport: String) -> Dict(String, String) {
         |> string.split(on: ":")
         let key = field
         |> list.first
-        |> unwrap
+        |> panic_unwrap
         let value = field
         |> list.last
-        |> unwrap
+        |> panic_unwrap
         #(key, value)
     })
     |> dict.from_list
@@ -47,41 +42,37 @@ fn validate_n_fields(passport: Dict(String, String)) -> Bool {
     |> dict.keys
     |> list.filter(list.contains(allowed_fields, _))
     |> list.length
-    |> fn (n) {
-        n == 7
-    }
+    |> intx.is(7)
 }
 
-fn int_between(value: String, min: Int, max: Int) -> Bool {
+fn parse_between(value: String, min: Int, max: Int) -> Bool {
     value
     |> int.parse
-    |> unwrap
-    |> fn (value) {
-        value >= min && value <= max
-    }
+    |> panic_unwrap
+    |> intx.between(min, max)
 }
 
 fn validate_byr(passport: Dict(String, String)) -> Bool {
     passport
-    |> dict.get("byr") |> unwrap
-    |> int_between(1920, 2002)
+    |> dict.get("byr") |> panic_unwrap
+    |> parse_between(1920, 2002)
 }
 
 fn validate_iyr(passport: Dict(String, String)) -> Bool {
     passport
-    |> dict.get("iyr") |> unwrap
-    |> int_between(2010, 2020)
+    |> dict.get("iyr") |> panic_unwrap
+    |> parse_between(2010, 2020)
 }
 
 fn validate_eyr(passport: Dict(String, String)) -> Bool {
     passport
-    |> dict.get("eyr") |> unwrap
-    |> int_between(2020, 2030)
+    |> dict.get("eyr") |> panic_unwrap
+    |> parse_between(2020, 2030)
 }
 
 fn validate_hgt(passport: Dict(String, String)) -> Bool {
     passport
-    |> dict.get("hgt") |> unwrap
+    |> dict.get("hgt") |> panic_unwrap
     |> fn (hgt) {
         let unit = hgt
         |> string.slice(at_index: -2, length: 2)
@@ -89,8 +80,8 @@ fn validate_hgt(passport: Dict(String, String)) -> Bool {
         |> string.drop_right(2)
 
         case unit {
-            "cm" -> int_between(hgt, 150, 193)
-            "in" -> int_between(hgt, 59, 76)
+            "cm" -> parse_between(hgt, 150, 193)
+            "in" -> parse_between(hgt, 59, 76)
             _ -> False
         }
     }
@@ -98,10 +89,10 @@ fn validate_hgt(passport: Dict(String, String)) -> Bool {
 
 fn validate_hcl(passport: Dict(String, String)) -> Bool {
     passport
-    |> dict.get("hcl") |> unwrap
+    |> dict.get("hcl") |> panic_unwrap
     |> fn (hcl) {
         regex.from_string("^#[0-9a-f]{6}$")
-        |> unwrap
+        |> panic_unwrap
         |> regex.check(hcl)
     }
 }
@@ -110,21 +101,19 @@ const valid_ecl = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
 
 fn validate_ecl(passport: Dict(String, String)) -> Bool {
     passport
-    |> dict.get("ecl") |> unwrap
+    |> dict.get("ecl") |> panic_unwrap
     |> list.contains(valid_ecl, _)
 }
 
 fn validate_pid(passport: Dict(String, String)) -> Bool {
     passport
-    |> dict.get("pid") |> unwrap
+    |> dict.get("pid") |> panic_unwrap
     |> string.length
-    |> fn (n) {
-        n == 9
-    }
+    |> intx.is(9)
 }
 
 fn part_1() {
-    read_lines("src/input.txt")
+    read_lines("data/day_4_input.txt")
     |> list.map(parse_passport)
     |> list.filter(validate_n_fields)
     |> list.length
@@ -132,7 +121,7 @@ fn part_1() {
 }
 
 fn part_2() {
-    read_lines("src/input.txt")
+    read_lines("data/day_4_input.txt")
     |> list.map(parse_passport)
     |> list.filter(validate_n_fields)
     |> list.filter(validate_byr)

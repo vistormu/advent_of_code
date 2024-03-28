@@ -1,30 +1,22 @@
 import gleam/io
+import gleamx/iox
 import gleam/string
 import gleam/list
 import gleam/set
 import gleam/int
-import simplifile as file
+import gleamx/resultx.{panic_unwrap}
 
-fn unwrap(result: Result(t, _)) -> t {
-    case result {
-        Ok(result) -> result
-        Error(e) -> {
-            io.debug(e)
-            panic
-        }
-    }
-}
 
 fn read_lines(path: String) -> List(String) {
     path
-    |> file.read
-    |> unwrap
+    |> iox.read_file
+    |> panic_unwrap
     |> string.trim
     |> string.split("\n\n")
 }
 
 fn part_1() {
-    read_lines("src/input.txt")
+    read_lines("data/day_6_input.txt")
     |> list.map(string.replace(_,"\n", ""))
     |> list.map(fn (line) {
         line
@@ -53,7 +45,7 @@ fn part_2() {
     |> string.to_graphemes
     |> set.from_list
 
-    read_lines("src/input.txt")
+    read_lines("data/day_6_input.txt")
     |> list.map(get_intersection(_, alphabet))
     |> int.sum
     |> io.debug

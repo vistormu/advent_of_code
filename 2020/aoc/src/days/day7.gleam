@@ -1,24 +1,16 @@
 import gleam/io
+import gleamx/iox
 import gleam/string
 import gleam/list
 import gleam/int
 import gleam/dict.{type Dict}
-import simplifile as file
+import gleamx/resultx.{panic_unwrap}
 
-fn unwrap(result: Result(t, _)) -> t {
-    case result {
-        Ok(result) -> result
-        Error(e) -> {
-            io.debug(e)
-            panic
-        }
-    }
-}
 
 fn read_lines(path: String) -> List(String) {
     path
-    |> file.read
-    |> unwrap
+    |> iox.read_file
+    |> panic_unwrap
     |> string.trim
     |> string.split("\n")
 }
@@ -26,17 +18,17 @@ fn read_lines(path: String) -> List(String) {
 fn parse_bag(line: String) -> #(String, List(#(String, Int))) {
     let primary_bag = line
     |> string.split(" bags contain ")
-    |> list.first |> unwrap
+    |> list.first |> panic_unwrap
 
     let secondary_bags = line
     |> string.split(" bags contain ")
-    |> list.last |> unwrap
+    |> list.last |> panic_unwrap
     |> string.split(", ")
     |> list.map(fn (elements) {
         case elements |> string.split(" ") {
             ["no", ..] -> #("", 0)
             [number, adjective, color, ..] -> {
-                let count = number |> int.parse |> unwrap
+                let count = number |> int.parse |> panic_unwrap
                 let bag = adjective <> " " <> color
                 #(bag, count)
             }
@@ -83,7 +75,7 @@ fn count_bags_recursively(
 ) -> Int {
     let directly_containing = bags
     |> dict.get(bag)
-    |> unwrap
+    |> panic_unwrap
 
     case directly_containing {
         [#("", 0)] -> 0
@@ -103,7 +95,7 @@ fn count_bags(bags: Dict(String, List(#(String, Int))), bag: String) -> Int {
 }
 
 fn part_1() {
-    read_lines("src/input.txt")
+    read_lines("data/day_7_input.txt")
     |> list.map(parse_bag)
     |> dict.from_list
     |> find_bag("shiny gold")
@@ -113,7 +105,7 @@ fn part_1() {
 }
 
 fn part_2() {
-    read_lines("src/input.txt")
+    read_lines("data/day_7_input.txt")
     |> list.map(parse_bag)
     |> dict.from_list
     |> count_bags("shiny gold")

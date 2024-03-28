@@ -1,25 +1,16 @@
 import gleam/io
+import gleamx/iox
 import gleam/string
 import gleam/list
 import gleam/int
 import gleam/iterator as iter
-import simplifile as file
+import gleamx/resultx.{panic_unwrap}
 
-
-fn unwrap(result: Result(t, _)) -> t {
-    case result {
-        Ok(result) -> result
-        Error(e) -> {
-            io.debug(e)
-            panic
-        }
-    }
-}
 
 fn read_lines(path: String) -> List(String) {
     path
-    |> file.read
-    |> unwrap
+    |> iox.read_file
+    |> panic_unwrap
     |> string.trim
     |> string.split("\n")
 }
@@ -31,14 +22,14 @@ fn calculate_id(boarding_pass: String) -> Int {
     |> string.replace("L", "0")
     |> string.replace("R", "1")
     |> int.base_parse(2)
-    |> unwrap
+    |> panic_unwrap
 }
 
 fn part_1() {
-    read_lines("src/input.txt") 
+    read_lines("data/day_5_input.txt") 
     |> list.map(calculate_id)
     |> list.reduce(int.max)
-    |> unwrap
+    |> panic_unwrap
     |> io.debug
 }
 
@@ -49,11 +40,11 @@ fn find_seat(ids: List(Int)) -> Int {
     |> iter.find( fn(id) {
        occupied(id-1) && !occupied(id) && occupied(id+1) 
     })
-    |> unwrap
+    |> panic_unwrap
 }
 
 fn part_2() {
-    read_lines("src/input.txt") 
+    read_lines("data/day_5_input.txt") 
     |> list.map(calculate_id)
     |> list.sort(int.compare)
     |> find_seat
