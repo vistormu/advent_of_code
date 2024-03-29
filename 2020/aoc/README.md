@@ -5,7 +5,7 @@
 ![Gleam](https://img.shields.io/badge/Gleam-grey?logo=Elixir)
 ![Stars](https://img.shields.io/badge/🌟%20stars-16/50-orange)
 
-|  Day   | Day                                                             | Part 1 | Part 2 |
+|  Day   | Name                                                            | Part 1 | Part 2 |
 | :----: | --------------------------------------------------------------- | :----: | :----: |
 | **01** | [Report Repair](https://adventofcode.com/2020/day/1)            | :star: | :star: |
 | **02** | [Password Philosophy](https://adventofcode.com/2020/day/2)      | :star: | :star: |
@@ -15,3 +15,4 @@
 | **06** | [Custom Customs](https://adventofcode.com/2020/day/6)           | :star: | :star: |
 | **07** | [Handy Haversacks](https://adventofcode.com/2020/day/7)         | :star: | :star: |
 | **08** | [Handheld Halting](https://adventofcode.com/2020/day/8)         | :star: | :star: |
+| **09** | [Encoding Error](https://adventofcode.com/2020/day/9)           | :star: | :star: |
