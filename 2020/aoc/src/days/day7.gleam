@@ -2,33 +2,27 @@ import gleam/io
 import gleamx/iox
 import gleam/string
 import gleam/list
+import gleamx/listx
 import gleam/int
+import gleamx/intx
 import gleam/dict.{type Dict}
 import gleamx/resultx.{panic_unwrap}
 
 
-fn read_lines(path: String) -> List(String) {
-    path
-    |> iox.read_file
-    |> panic_unwrap
-    |> string.trim
-    |> string.split("\n")
-}
-
 fn parse_bag(line: String) -> #(String, List(#(String, Int))) {
     let primary_bag = line
     |> string.split(" bags contain ")
-    |> list.first |> panic_unwrap
+    |> listx.first_
 
     let secondary_bags = line
     |> string.split(" bags contain ")
-    |> list.last |> panic_unwrap
+    |> listx.last_
     |> string.split(", ")
     |> list.map(fn (elements) {
         case elements |> string.split(" ") {
             ["no", ..] -> #("", 0)
             [number, adjective, color, ..] -> {
-                let count = number |> int.parse |> panic_unwrap
+                let count = number |> intx.parse_
                 let bag = adjective <> " " <> color
                 #(bag, count)
             }
@@ -40,11 +34,7 @@ fn parse_bag(line: String) -> #(String, List(#(String, Int))) {
 }
 
 
-fn find_bag_recursively(
-    bags: Dict(String, List(#(String, Int))), 
-    bag: String, 
-    seen: List(String)
-) -> List(String) {
+fn find_bag_recursively(bags: Dict(String, List(#(String, Int))), bag: String, seen: List(String)) -> List(String) {
     let directly_containing = bags
     |> dict.filter(fn (_k, v) { 
         v 
@@ -69,10 +59,7 @@ fn find_bag(bags: Dict(String, List(#(String, Int))), bag: String) -> List(Strin
     find_bag_recursively(bags, bag, [])
 }
 
-fn count_bags_recursively(
-    bags: Dict(String, List(#(String, Int))), 
-    bag: String
-) -> Int {
+fn count_bags_recursively(bags: Dict(String, List(#(String, Int))), bag: String) -> Int { 
     let directly_containing = bags
     |> dict.get(bag)
     |> panic_unwrap
@@ -95,7 +82,7 @@ fn count_bags(bags: Dict(String, List(#(String, Int))), bag: String) -> Int {
 }
 
 fn part_1() {
-    read_lines("data/day_7_input.txt")
+    iox.read_lines_("data/day_7_input.txt")
     |> list.map(parse_bag)
     |> dict.from_list
     |> find_bag("shiny gold")
@@ -105,7 +92,7 @@ fn part_1() {
 }
 
 fn part_2() {
-    read_lines("data/day_7_input.txt")
+    iox.read_lines_("data/day_7_input.txt")
     |> list.map(parse_bag)
     |> dict.from_list
     |> count_bags("shiny gold")

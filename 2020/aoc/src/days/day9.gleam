@@ -1,22 +1,15 @@
 import gleam/io
 import gleamx/iox
-import gleam/string
 import gleamx/resultx.{panic_unwrap}
 import gleam/list
+import gleamx/listx
 import gleam/int
+import gleamx/intx
 
-fn read_lines(file_path: String) -> List(String) {
-    file_path
-    |> iox.read_file
-    |> panic_unwrap
-    |> string.trim
-    |> string.split("\n")
-}
 
 fn find_number(lines: List(Int)) -> Int {
     let number = lines
-    |> list.at(25)
-    |> panic_unwrap
+    |> listx.at_(25)
 
     let pair = lines
     |> list.take(25)
@@ -52,17 +45,15 @@ fn sum_numbers_loop(lines: List(Int), up_to: Int, target: Int) -> Int {
 }
 
 fn part_1() {
-    read_lines("data/day_9_input.txt")
-    |> list.map(int.parse)
-    |> list.map(panic_unwrap)
+    iox.read_lines_("data/day_9_input.txt")
+    |> list.map(intx.parse_)
     |> find_number
     |> io.debug
 }
 
 fn part_2() {
-    read_lines("data/day_9_input.txt")
-    |> list.map(int.parse)
-    |> list.map(panic_unwrap)
+    iox.read_lines_("data/day_9_input.txt")
+    |> list.map(intx.parse_)
     |> sum_numbers
     |> io.debug
 }

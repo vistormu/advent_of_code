@@ -1,18 +1,10 @@
 import gleam/io
 import gleamx/iox
-import gleamx/resultx.{panic_unwrap}
 import gleam/string
 import gleamx/stringx
 import gleam/list
-import gleam/int
+import gleamx/listx
 import gleamx/intx
-
-fn read_lines(file_path: String) -> List(String) {
-    file_path
-    |> iox.read_file |> panic_unwrap
-    |> string.trim
-    |> string.split(on: "\n")
-}
 
 type Line {
     Line(min: Int, max: Int, letter: String, password: String)
@@ -23,29 +15,29 @@ fn parse_line(line: String) -> Line {
     |> string.split(on: " ")
 
     let numbers = parts
-    |> list.at(0) |> panic_unwrap
+    |> listx.at_(0)
     |> string.split(on: "-")
 
     let min = numbers
-    |> list.at(0) |> panic_unwrap
-    |> int.parse |> panic_unwrap
+    |> listx.at_(0)
+    |> intx.parse_
 
     let max = numbers
-    |> list.at(1) |> panic_unwrap
-    |> int.parse |> panic_unwrap
+    |> listx.at_(1)
+    |> intx.parse_
 
     let letter = parts
-    |> list.at(1) |> panic_unwrap
+    |> listx.at_(1)
     |> string.slice(at_index: 0, length: 1)
 
     let password = parts
-    |> list.at(2) |> panic_unwrap
+    |> listx.at_(2)
 
     Line(min: min, max: max, letter: letter, password: password)
 }
 
 fn part_1() {
-    read_lines("data/day_2_input.txt")
+    iox.read_lines_("data/day_2_input.txt")
     |> list.map(parse_line)
     |> list.map(fn (line) {
         stringx.count(line.password, line.letter)
@@ -57,7 +49,7 @@ fn part_1() {
 }
 
 fn part_2() {
-    read_lines("data/day_2_input.txt")
+    iox.read_lines_("data/day_2_input.txt")
     |> list.map(parse_line)
     |> list.map(fn (line) {
         let first = line.password

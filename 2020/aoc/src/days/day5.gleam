@@ -7,14 +7,6 @@ import gleam/iterator as iter
 import gleamx/resultx.{panic_unwrap}
 
 
-fn read_lines(path: String) -> List(String) {
-    path
-    |> iox.read_file
-    |> panic_unwrap
-    |> string.trim
-    |> string.split("\n")
-}
-
 fn calculate_id(boarding_pass: String) -> Int {
     boarding_pass
     |> string.replace("F", "0")
@@ -26,7 +18,7 @@ fn calculate_id(boarding_pass: String) -> Int {
 }
 
 fn part_1() {
-    read_lines("data/day_5_input.txt") 
+    iox.read_lines_("data/day_5_input.txt") 
     |> list.map(calculate_id)
     |> list.reduce(int.max)
     |> panic_unwrap
@@ -44,7 +36,7 @@ fn find_seat(ids: List(Int)) -> Int {
 }
 
 fn part_2() {
-    read_lines("data/day_5_input.txt") 
+    iox.read_lines_("data/day_5_input.txt") 
     |> list.map(calculate_id)
     |> list.sort(int.compare)
     |> find_seat

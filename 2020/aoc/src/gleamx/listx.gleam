@@ -1,4 +1,5 @@
 import gleam/list
+import gleamx/resultx.{panic_unwrap}
 
 pub fn replace(in l: List(t), at index: Int, with new: t) -> List(t) {
     case list.at(l, index) {
@@ -26,4 +27,22 @@ fn find_index_loop(l: List(t), f: fn(t) -> Bool, index: Int) -> Result(Int, Stri
             }
         }
     }
+}
+
+pub fn count(in l: List(t), where f: fn(t) -> Bool) -> Int {
+    l
+    |> list.filter(f)
+    |> list.length
+}
+
+pub fn at_(in l: List(t), at index: Int) -> t {
+    l |> list.at(index) |> panic_unwrap
+}
+
+pub fn first_(in l: List(t)) -> t {
+    l |> list.first |> panic_unwrap
+}
+
+pub fn last_(in l: List(t)) -> t {
+    l |> list.last |> panic_unwrap
 }

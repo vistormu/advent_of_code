@@ -3,7 +3,7 @@
 ## var y=2020;
 
 ![Gleam](https://img.shields.io/badge/Gleam-grey?logo=Elixir)
-![Stars](https://img.shields.io/badge/🌟%20stars-16/50-orange)
+![Stars](https://img.shields.io/badge/🌟%20stars-22/50-orange)
 
 |  Day   | Name                                                            | Part 1 | Part 2 |
 | :----: | --------------------------------------------------------------- | :----: | :----: |
@@ -16,3 +16,5 @@
 | **07** | [Handy Haversacks](https://adventofcode.com/2020/day/7)         | :star: | :star: |
 | **08** | [Handheld Halting](https://adventofcode.com/2020/day/8)         | :star: | :star: |
 | **09** | [Encoding Error](https://adventofcode.com/2020/day/9)           | :star: | :star: |
+| **10** | [Adapter Array](https://adventofcode.com/2020/day/10)           | :star: | :star: |
+| **11** | [Seating System](https://adventofcode.com/2020/day/11)          | :star: | :star: |

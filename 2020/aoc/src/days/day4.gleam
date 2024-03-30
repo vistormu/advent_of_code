@@ -1,8 +1,8 @@
 import gleam/io
 import gleamx/iox
 import gleam/list
+import gleamx/listx
 import gleam/string
-import gleam/int
 import gleamx/intx
 import gleam/dict.{type Dict}
 import gleam/regex
@@ -11,8 +11,7 @@ import gleamx/resultx.{panic_unwrap}
 
 fn read_lines(file_path: String) -> List(String) {
     file_path
-    |> iox.read_file
-    |> panic_unwrap
+    |> iox.read_
     |> string.trim
     |> string.split(on: "\n\n")
     |> list.map(string.replace(_, "\n", " "))
@@ -22,14 +21,9 @@ fn parse_passport(passport: String) -> Dict(String, String) {
     passport
     |> string.split(on: " ")
     |> list.map(fn (field) {
-        let field = field
-        |> string.split(on: ":")
-        let key = field
-        |> list.first
-        |> panic_unwrap
-        let value = field
-        |> list.last
-        |> panic_unwrap
+        let field = field |> string.split(on: ":")
+        let key = field |> listx.first_
+        let value = field |> listx.last_
         #(key, value)
     })
     |> dict.from_list
@@ -47,8 +41,7 @@ fn validate_n_fields(passport: Dict(String, String)) -> Bool {
 
 fn parse_between(value: String, min: Int, max: Int) -> Bool {
     value
-    |> int.parse
-    |> panic_unwrap
+    |> intx.parse_
     |> intx.between(min, max)
 }
 

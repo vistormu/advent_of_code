@@ -1,27 +1,17 @@
 import gleam/io
 import gleamx/iox
 import gleam/list
+import gleamx/listx
 import gleam/int
 import gleam/string
 import gleamx/stringx
-import gleamx/resultx
 
-
-fn read_lines(file_path: String) -> List(String) {
-    file_path
-    |> iox.read_file 
-    |> resultx.panic_unwrap
-    |> string.trim
-    |> string.split(on: "\n")
-}
 
 fn traverse_loop(lines: List(String), x: Int, y: Int, slope: #(Int, Int)) -> Int {
     case y >= list.length(lines) {
         True -> 0
         False -> {
-            let line = list.at(lines, y)
-            |> resultx.panic_unwrap
-
+            let line = listx.at_(lines, y)
             let spot = line
             |> stringx.at(x % string.length(line))
             
@@ -38,7 +28,7 @@ fn traverse(lines: List(String), slope: #(Int, Int)) -> Int {
 }
 
 fn part_1() {
-    read_lines("data/day_3_input.txt")
+    iox.read_lines_("data/day_3_input.txt")
     |> traverse(#(3, 1))
     |> io.debug
 }
@@ -52,7 +42,7 @@ fn part_2() {
         #(1, 2),
     ]
 
-    let map = read_lines("data/day_3_input.txt")
+    let map = iox.read_lines_("data/day_3_input.txt")
 
     slopes
     |> list.map(traverse(map, _))

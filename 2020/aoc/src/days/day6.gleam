@@ -4,13 +4,11 @@ import gleam/string
 import gleam/list
 import gleam/set
 import gleam/int
-import gleamx/resultx.{panic_unwrap}
 
 
 fn read_lines(path: String) -> List(String) {
     path
-    |> iox.read_file
-    |> panic_unwrap
+    |> iox.read_
     |> string.trim
     |> string.split("\n\n")
 }
