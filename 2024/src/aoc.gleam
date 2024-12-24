@@ -1,4 +1,4 @@
-import days/day1 as day
+import days/day4 as day
 
 pub fn main() {
     day.run()

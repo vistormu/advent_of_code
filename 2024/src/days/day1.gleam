@@ -18,7 +18,7 @@ pub fn run() {
     |> iox.read_lines
     |> part1
     |> function.wrap
-    |> utils.run("part1", _)
+    |> utils.run("part1")
 
     "input/day1_test.txt"
     |> iox.read_lines
@@ -29,7 +29,7 @@ pub fn run() {
     |> iox.read_lines
     |> part2
     |> function.wrap
-    |> utils.run("part2", _)
+    |> utils.run("part2")
 }
 
 fn part1(content: List(String)) -> Int {

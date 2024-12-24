@@ -41,7 +41,7 @@ pub fn format_duration(d: Duration) -> String {
   }
 }
 
-pub fn run(label: String, function) {
+pub fn run(function, label: String) {
     let start = birl.now()
     let result = function()
     let diff = birl.now()
